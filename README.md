@@ -25,7 +25,7 @@ sudo apt clean                             # Clears the local cache of downloade
 
 ---
 
-## 2. Enable firewall (UFW)
+## 2. Enable Firewall
 Ubuntu comes with its own Uncomplicated Firewall (UFW).\
 It controls network traffic to and from your computer, serving as a barrier between your system and the network.\
 UFW simplifies firewall management by using straightforward terminal commands.
@@ -39,3 +39,20 @@ sudo ufw status                  # Verifies firewall rules
 ```
 
 ---
+
+## 3. Enable AppArmor
+Linux security relies on user permissions (root vs non-root). If an application is compromised, it has the same permissions as the user running it, meaning it can do everything that user can.\
+AppArmor is a security module that protects the system by restricting the permissions of individual programs. It uses profiles that define which files an application can read, write, or execute, which network resources it can access, and more. If an application attempts to perform an action outside of its assigned profile, AppArmor will block it and log the violation.\
+Profiles are defined per application, not per user, and consist of rules that specify the allowed behavior of an application.\
+- **Enforce mode** blocks and logs policy violations.
+- **Complain mode** allows violations but logs them for review.
+AppArmor is enabled by default on some Linux distributions, such as Ubuntu.
+
+Check if it's running:
+```bash
+sudo aa-status
+```
+If it's not:
+```bash
+sudo systemctl enable apparmor --now
+```
