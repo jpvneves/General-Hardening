@@ -56,9 +56,9 @@ sudo systemctl enable apparmor --now  # If it's not running activate it
 ---
 
 ## 4. Remove Unnecessary Services
-Linux comes with multiple different services enabled by default, many are important and needed for normal use.\
-Not all of them are needed and the more you have the larger the attack surface of your system.\
-It's important then, to disable any service you know you won't need or use or that doesn't have dependencies that are important.
+Linux comes with many services enabled by default. Many of them are important and required for normal use.\
+However, not all services are necessary, and the more services you have running, the larger your system’s attack surface becomes.\
+It is therefore important to disable any service that you know you won’t need or use, or that does not have critical dependencies.
 
 ```bash
 systemctl list-unit-files --type=service | grep enabled  # List all the enabled services
