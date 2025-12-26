@@ -67,23 +67,4 @@ systemctl list-dependencies (service name)               # List all the dependen
 sudo systemctl disable --now (service name)              # Disable the service
 sudo apt purge (service name)                            # After a few days of use without the service, purge it if you want
 ```
-List of services that can me safely disabled (always check):
-```bash
-avahi-daemon               # Local network discovery (mDNS / Bonjour, AirPlay, network printers)
-avahi-daemon.socket        # Socket activation for avahi-daemon
-cups                       # Printing system
-cups-browsed               # Automatically discovers network printers
-cups.path                  # Watches printer config paths
-cups.socket                # Socket activation for CUPS
-saned                      # Scanner daemon (SANE backend)
-bluetooth                  # Bluetooth device support (headsets, keyboards, mice)
-ModemManager               # Mobile broadband (3G/4G/5G USB modems)
-whoopsie                   # Sends crash reports to Ubuntu
-apport                     # Collects crash and error reports
-gnome-remote-desktop       # GNOME screen sharing (RDP / VNC)
-rpcbind                    # RPC port mapping (used by legacy NFS and some network services)
-rpcbind.socket             # Socket activation for rpcbind
-pcscd                      # Smart card reader support
-NetworkManager-wait-online # Delays boot until network is fully online (mainly for servers)
-```
 
