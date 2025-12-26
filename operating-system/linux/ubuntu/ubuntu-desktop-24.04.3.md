@@ -1,3 +1,17 @@
+# Ubuntu Desktop - 24.04.3
+
+---
+
+## Overview
+TODO
+
+---
+
+## Table of Contents
+TODO
+
+---
+
 ## 1. Update the System
 Keeping the system properly updated is the first thing anyone should do to ensure security.\
 Every system has vulnerabilities, and outdated packages allow a malicious attacker to exploit those vulnerabilities to compromise the system. Keeping the system updated with the latest packages helps reduce risk and prevent exploitation.\
@@ -56,3 +70,18 @@ systemctl list-dependencies (service name)               # List all the dependen
 sudo systemctl disable --now (service name)              # Disable the service
 sudo apt purge (service name)                            # After a few days of use without the service, purge it if you want
 ```
+
+---
+
+## 5. Secure User Accounts
+TODO
+
+---
+
+## 6. Disk Encryption
+TODO
+
+---
+
+## 7. Secure Boot
+TODO
