@@ -36,7 +36,7 @@ Enabling it reduces the attack surface by blocking unsolicited inbound traffic a
 sudo ufw default deny incoming   # Blocks all unsolicited inbound connections by default
 sudo ufw default allow outgoing  # Allows normal desktop activity
 sudo ufw enable                  # Activates firewall
-sudo ufw status                  # Verifies firewall rules
+sudo ufw status verbose          # Checks firewall activation
 ```
 
 ---
@@ -52,6 +52,7 @@ AppArmor is enabled by default on some Linux distributions, such as Ubuntu.
 ```bash
 sudo aa-status                        # Check if it's running
 sudo systemctl enable apparmor --now  # If it's not running activate it
+sudo aa-enforce /etc/apparmor.d/*     # Switch profiles from complain to enforce if needed
 ```
 
 ---
@@ -59,7 +60,8 @@ sudo systemctl enable apparmor --now  # If it's not running activate it
 ## 4. Remove Unnecessary Services
 Linux comes with many services enabled by default. Many of them are important and required for normal use.\
 However, not all services are necessary, and the more services you have running, the larger your system’s attack surface becomes.\
-It is therefore important to disable any service that you know you won’t need or use, or that does not have critical dependencies.
+It is therefore important to disable any service that you know you won’t need or use, or that does not have critical dependencies. If you disable an important service the system might become unstable.\
+If unsure, do not disable it.
 
 ```bash
 systemctl list-unit-files --type=service | grep enabled  # List all the enabled services
@@ -82,13 +84,18 @@ In order to secure your user accounts you need:
 - Session and screen protection
 
 ```bash
-passwd                                                        # Change password to a stronger one
-sudo passwd -l root                                           # Locks root account
-sudo apt install libpam-tmpdir                                # Prevents users from accessing other users tmp folder
-sudo faillog -m (max failed attempts) -l (lockout seconds)    # Change parameters for failed login attempts
-sudo visudo                                                   # Harden sudo
-Add: Defaults timestamp_timeout=(forget password minutes)     # Forgets sudo password after some minutes
-Add: Defaults logfile="/var/log/sudo.log"                     # Create log file of sudo command uses
+passwd                                                                                   # Change password to a stronger one
+sudo passwd -l root                                                                      # Locks root account
+sudo visudo                                                                              # Harden sudo
+- Add: Defaults timestamp_timeout=(forget password minutes)                              # Forgets sudo password after some minutes
+- Add: Defaults logfile="/var/log/sudo.log"                                              # Create log file of sudo command uses
+getent group sudo                                                                        # Ensure only trusted users belong to sudo group
+sudo nano /etc/pam.d/common-auth                                                         # Edit PAM configuration
+- Add: required pam_faillock.so preauth silent deny=(amount) unlock_time=(seconds)       # If account is already locked after 5 attempts lock for 15 minutes
+- Add: auth [default=die] pam_faillock.so authfail deny=(amount) unlock_time=(seconds)   # Record failed authentication attempts.
+sudo apt install libpam-tmpdir                                                           # Prevents users from accessing each others tmp files
+gsettings set org.gnome.desktop.session idle-delay (seconds)                             # How long the system can be idle before lockout  
+gsettings set org.gnome.desktop.screensaver lock-enabled true                            # Force to lock screen when screensavers shows activates
 ```
 
 ---
