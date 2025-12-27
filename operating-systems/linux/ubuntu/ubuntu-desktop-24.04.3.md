@@ -3,12 +3,10 @@
 ---
 
 ## Overview
-TODO
-
----
-
-## Table of Contents
-TODO
+This hardening guide is specificaly made for Ubuntu Desktop, so I made it taking into consideration that SSH won't be used.\
+Before installing Ubuntu or attempting any of these hardening measures it is safest and strongly recommended to read through the guide and check and recheck every step. While most measures are safe some, like "Remove Unnecessary Services" is risky without proper study beforehand.\
+While all sections are numbered these aren't in any particular order and could be applied at different points of the hardening process. For example: you should activate Secure Boot (UEFI) before installing Ubuntu and activate Disk Encryption (LUKS) while installing Ubuntu.\
+This guide will be constantly improving with new commands added or removed as needed.
 
 ---
 
