@@ -36,7 +36,7 @@ Enabling it reduces the attack surface by blocking unsolicited inbound traffic a
 sudo ufw default deny incoming   # Blocks all unsolicited inbound connections by default
 sudo ufw default allow outgoing  # Allows normal desktop activity
 sudo ufw enable                  # Activates firewall
-sudo ufw status verbose          # Checks firewall activation
+sudo ufw status verbose          # Verifies firewall rules
 ```
 
 ---
