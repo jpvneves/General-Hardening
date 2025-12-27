@@ -3,10 +3,10 @@
 ---
 
 ## Overview
-This hardening guide is specificaly made for Ubuntu Desktop, so I made it taking into consideration that SSH won't be used.\
-Before installing Ubuntu or attempting any of these hardening measures it is safest and strongly recommended to read through the guide and check and recheck every step. While most measures are safe some, like "Remove Unnecessary Services" is risky without proper study beforehand.\
+This hardening guide is specifically made for Ubuntu Desktop, taking into consideration that SSH won’t be used.\
+Before installing Ubuntu or attempting any of these hardening measures, it is safest and strongly recommended to read through the guide and check and recheck every step. While most measures are safe, some, like “Remove Unnecessary Services”, are risky without proper study beforehand.\
 While all sections are numbered these aren't in any particular order and could be applied at different points of the hardening process. For example: you should activate Secure Boot (UEFI) before installing Ubuntu and activate Disk Encryption (LUKS) while installing Ubuntu.\
-This guide will be constantly improving with new commands added or removed as needed.
+This guide will be constantly improved, with new commands added or removed as needed.
 
 ---
 
@@ -42,7 +42,7 @@ sudo ufw status verbose          # Checks firewall activation
 ---
 
 ## 3. Enable AppArmor
-Linux security relies on user permissions (root vs non-root). If an application is compromised, it has the same permissions as the user running it, meaning it can do everything that user can.\
+Linux security relies on user permissions (root vs non-root). If an application is compromised, it has the same permissions as the user running it, meaning it can do everything that user can do.\
 AppArmor is a security module that protects the system by restricting the permissions of individual programs. It uses profiles that define which files an application can read, write, or execute, which network resources it can access, and more. If an application attempts to perform an action outside of its assigned profile, AppArmor will block it and log the violation.\
 Profiles are defined per application, not per user, and consist of rules that specify the allowed behavior of an application.\
 - **Enforce mode** blocks and logs policy violations.
@@ -60,7 +60,7 @@ sudo aa-enforce /etc/apparmor.d/*     # Switch profiles from complain to enforce
 ## 4. Remove Unnecessary Services
 Linux comes with many services enabled by default. Many of them are important and required for normal use.\
 However, not all services are necessary, and the more services you have running, the larger your system’s attack surface becomes.\
-It is therefore important to disable any service that you know you won’t need or use, or that does not have critical dependencies. If you disable an important service the system might become unstable.\
+It is therefore important to disable any service that you know you won’t need or use, or that does not have critical dependencies. If you disable an important service, the system might become unstable.\
 If unsure, do not disable it.
 
 ```bash
@@ -75,7 +75,7 @@ sudo apt purge (service name)                            # After a few days of u
 
 ## 5. Secure User Accounts
 One of the largest attack surfaces of your system is the user accounts.\
-If an attacker was able to get inside your user account they would be able to do anything that user can do as well as access all the user's files and use even root via sudo.\
+If an attacker were able to access your user account, they would be able to do anything that user can do, including accessing all of the user’s files and even using root privileges via sudo.\
 In order to secure your user accounts you need:
 - Strong authentication
 - Minimal user accounts
@@ -88,14 +88,14 @@ passwd                                                                          
 sudo passwd -l root                                                                      # Locks root account
 sudo visudo                                                                              # Harden sudo
 - Add: Defaults timestamp_timeout=(forget password minutes)                              # Forgets sudo password after some minutes
-- Add: Defaults logfile="/var/log/sudo.log"                                              # Create log file of sudo command uses
+- Add: Defaults logfile="/var/log/sudo.log"                                              # Create a log file for sudo command usage
 getent group sudo                                                                        # Ensure only trusted users belong to sudo group
 sudo nano /etc/pam.d/common-auth                                                         # Edit PAM configuration
 - Add: required pam_faillock.so preauth silent deny=(amount) unlock_time=(seconds)       # If account is already locked after 5 attempts lock for 15 minutes
 - Add: auth [default=die] pam_faillock.so authfail deny=(amount) unlock_time=(seconds)   # Record failed authentication attempts.
-sudo apt install libpam-tmpdir                                                           # Prevents users from accessing each others tmp files
+sudo apt install libpam-tmpdir                                                           # Prevents users from accessing each other’s temporary files
 gsettings set org.gnome.desktop.session idle-delay (seconds)                             # How long the system can be idle before lockout  
-gsettings set org.gnome.desktop.screensaver lock-enabled true                            # Force to lock screen when screensavers shows activates
+gsettings set org.gnome.desktop.screensaver lock-enabled true                            # Force the screen to lock when the screensaver activates
 ```
 
 ---
@@ -103,19 +103,19 @@ gsettings set org.gnome.desktop.screensaver lock-enabled true                   
 ## 6. Disk Encryption
 Not all attacks are cyber attacks.\
 Your computer might get stolen, so it's important to ensure that if that happens, your data is safely secured.\
-Disk Encryption converts all the data on your disk to unreadable ciphertext. This makes it so that only someone that has the correct decryption key can get decrypt the data.
+Disk Encryption converts all the data on your disk to unreadable ciphertext. This ensures that only someone with the correct decryption key can decrypt the data.
 
 It is recommended to encrypt the disk during the Ubuntu installation by using:
-- **LUKS (Linux Unified Key Setup)**: It uses strong cryptography (AES-XTS) to encrypt you disk.
+- **LUKS (Linux Unified Key Setup)**: It uses strong cryptography (AES-XTS) to encrypt your disk.
 
-While it is possible to encrypt the disk post-installation it is generaly not recommended.
+While it is possible to encrypt the disk post-installation it is generally not recommended.
 
 ---
 
 ## 7. Secure Boot
 Some malware might be able to attack your system even before it boots.\
 Secure Boot (UEFI) is a firmware security feature that only allows trusted cryptographically signed software to run during boot.\
-What this does is that it prevents boot-level malware from executing.\
+This prevents boot-level malware from executing.\
 UEFI is activated inside the firmware settings, so the options might differ from vendor to vendor.\
 It is recommended to install Ubuntu in UEFI mode.
 
