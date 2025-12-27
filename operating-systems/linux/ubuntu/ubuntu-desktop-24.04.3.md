@@ -108,4 +108,9 @@ While it is possible to encrypt the disk post-installation it is generaly not re
 ---
 
 ## 7. Secure Boot
-TODO
+Some malware might be able to attack your system even before it boots.\
+Secure Boot (UEFI) is a firmware security feature that only allows trusted cryptographically signed software to run during boot.\
+What this does is that it prevents boot-level malware from executing.\
+UEFI is activated inside the firmware settings, so the options might differ from vendor to vendor.\
+It is recommended to install Ubuntu in UEFI mode.
+
